@@ -10,37 +10,30 @@ using namespace cv;
 void morphOps(Mat &thresh) {
 
 	//create structuring element that will be used to "dilate" and "erode" image.
-	//the element chosen here is a 3px by 3px rectangle
-	// 3x3
 	Mat erodeElement = getStructuringElement(MORPH_RECT, Size(3, 3));
-	//dilate with larger element so make sure object is nicely visible
-	// 8x8
 	Mat dilateElement = getStructuringElement(MORPH_RECT, Size(8, 8));
 
+	// Apply the operations
 	erode(thresh, thresh, erodeElement);
-
 	dilate(thresh, thresh, dilateElement);
 
 }
 
 int main() {
-	// The object the current frame of the camera is stored in
-	Mat frame;
-	Mat fore;
-	Mat back;
-	Mat HSV;
-	Mat threshold;
-	Mat objectCont;
-	vector<vector<Point> > contours;
-	vector<Vec4i> hierarchy;
+	Mat frame;		// The current frame of the camera
+	Mat fore;		// The foreground of the image's mask
+	Mat back;		// The background model
+	Mat HSV;		// The Hue, Saturation, Value tranformed image
+	Mat threshold;	// The mask based of the predefind colour threshold
+	Mat objectCont; // The frame that contains the current frame with the contours of the objects drawn on.
+	vector<vector<Point> > contours;	// vector of contours, the outline around each object
+	vector<Vec4i> hierarchy;			// Used in working with the contours
 
 	BackgroundSubtractorMOG2 bg(100, 10, false);
 
 	// Set up the webcam to capture
 	VideoCapture capture;
 	capture.open(0);
-
-
 
 	// Create a windows
 	namedWindow("Input");
@@ -60,6 +53,9 @@ int main() {
 
 		/* Color threshold
 		cvtColor(frame,HSV,COLOR_BGR2HSV);
+
+		// Filter out all HSV values that are not within the defined threshold
+		// This specific example should isolate my orange highlighter pen.
 		inRange(HSV,Scalar(0,82,89),Scalar(13,171,256),threshold);
 		imshow("Color", HSV);
 		//morphOps(threshold);
