@@ -62,7 +62,7 @@ int main() {
 		imshow("Threshold", threshold);
 		findContours(threshold, contours, hierarchy, CV_RETR_CCOMP, CV_CHAIN_APPROX_SIMPLE);
 		frame.copyTo(objectCont);
-		drawContours(objectCont, contours, -1, cv::Scalar(0, 0, 255), 2);
+		drawContours(objectCont, contours, -1, cv::Scalar(0, 255, 0), 2);
 		imshow("Contours", objectCont);
 		*/
 
@@ -70,7 +70,7 @@ int main() {
 		imshow("Input", frame);
 
 		// Wait 30 seconds and then exit once the Esc key (key 27) is pressed.
-		if (waitKey(30) == 27)
+		if (waitKey(1) == 27)
 					break;
 	}
 
